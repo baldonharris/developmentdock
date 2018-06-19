@@ -1,0 +1,31 @@
+version: '3.1'
+services:
+  wordpress:
+    image: wordpress
+    restart: always
+    volumes:
+      - "./myproject/:/var/www/html/wp-content/"
+    ports:
+      - "80:80"
+    links:
+      - mysql
+  mysql:
+    image: mysql:5.7
+    restart: always
+    ports:
+      - "3306:3306"
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=wordpress
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin:latest
+    ports:
+      - "8080:80"
+    links:
+      - mysql
+    environment:
+      - PMA_HOST=mysql
+      - PMA_PORT=3306
+      - PMA_USER=root
+      - PMA_PASSWORD=root
+      - PMA_ABSOLUTE_URI=phpmyadmin
